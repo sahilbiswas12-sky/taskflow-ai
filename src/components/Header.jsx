@@ -5,6 +5,7 @@ function Header({
   onToggleTheme,
   onProfile,
   onNotifications,
+  onMenu,
   profile = {},
   notificationCount = 0,
 }) {
@@ -13,6 +14,16 @@ function Header({
   return (
     <header className="app-header">
       <div className="header-left">
+        <button
+          type="button"
+          className="mobile-menu-button"
+          onClick={onMenu}
+          aria-label="Open navigation menu"
+          title="Open menu"
+        >
+          ☰
+        </button>
+
         <span className="header-title">
           TaskFlow AI
         </span>

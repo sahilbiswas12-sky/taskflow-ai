@@ -95,6 +95,7 @@ function App() {
 
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
+  const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
 
   const [deleteTaskId, setDeleteTaskId] = useState(null);
 
@@ -237,14 +238,16 @@ function App() {
     }));
   }, [activeTasks]);
 
-  const handleNavigation = (view) => {
-    setActiveView(view);
+const handleNavigation = (view) => {
+  setActiveView(view);
 
-    if (view === "settings") {
-      setIsProfileOpen(false);
-      setIsNotificationsOpen(false);
-    }
-  };
+  setIsMobileSidebarOpen(false);
+
+  if (view === "settings") {
+    setIsProfileOpen(false);
+    setIsNotificationsOpen(false);
+  }
+};
 
   const handleAddTask = () => {
     setEditingTask(null);
@@ -341,27 +344,33 @@ function App() {
   return (
     <div className="app">
       <Sidebar
-        activeView={activeView}
-        onNavigate={handleNavigation}
-        profile={profile}
-      />
-
-      <Header
-        searchTerm={searchTerm}
-        onSearch={setSearchTerm}
-        darkMode={darkMode}
-        onToggleTheme={() => setDarkMode((value) => !value)}
-        onProfile={() => {
-          setIsProfileOpen((value) => !value);
-          setIsNotificationsOpen(false);
-        }}
-        onNotifications={() => {
-          setIsNotificationsOpen((value) => !value);
-          setIsProfileOpen(false);
-        }}
-        profile={profile}
-        notificationCount={notifications.length}
-      />
+    activeView={activeView}
+    onNavigate={handleNavigation}
+    profile={profile}
+    isOpen={isMobileSidebarOpen}
+    onClose={() => setIsMobileSidebarOpen(false)}
+/>
+<Header
+  searchTerm={searchTerm}
+  onSearch={setSearchTerm}
+  onMenu={() =>
+    setIsMobileSidebarOpen(true)
+  }
+  darkMode={darkMode}
+  onToggleTheme={() =>
+    setDarkMode((value) => !value)
+  }
+  onProfile={() => {
+    setIsProfileOpen((value) => !value);
+    setIsNotificationsOpen(false);
+  }}
+  onNotifications={() => {
+    setIsNotificationsOpen((value) => !value);
+    setIsProfileOpen(false);
+  }}
+  profile={profile}
+  notificationCount={notifications.length}
+/>
 
       <main className="main-content">
         {showTaskInterface && (
