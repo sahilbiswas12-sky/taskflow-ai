@@ -13,15 +13,11 @@ function TaskFilters({
   return (
     <div className="task-toolbar">
       <div className="task-filters">
-        <span className="filter-label">
-          Filter
-        </span>
+        <span className="filter-label">Filter</span>
 
         <button
           type="button"
-          className={`filter-button ${
-            statusFilter === "ALL" ? "active" : ""
-          }`}
+          className={`filter-button ${statusFilter === "ALL" ? "active" : ""}`}
           onClick={() => onStatusChange("ALL")}
         >
           All
@@ -29,11 +25,7 @@ function TaskFilters({
 
         <button
           type="button"
-          className={`filter-button ${
-            statusFilter === "ACTIVE"
-              ? "active"
-              : ""
-          }`}
+          className={`filter-button ${statusFilter === "ACTIVE" ? "active" : ""}`}
           onClick={() => onStatusChange("ACTIVE")}
         >
           Active
@@ -41,14 +33,8 @@ function TaskFilters({
 
         <button
           type="button"
-          className={`filter-button ${
-            statusFilter === "COMPLETED"
-              ? "active"
-              : ""
-          }`}
-          onClick={() =>
-            onStatusChange("COMPLETED")
-          }
+          className={`filter-button ${statusFilter === "COMPLETED" ? "active" : ""}`}
+          onClick={() => onStatusChange("COMPLETED")}
         >
           Completed
         </button>
@@ -57,9 +43,7 @@ function TaskFilters({
       <div className="advanced-filters">
         <select
           value={priorityFilter}
-          onChange={(event) =>
-            onPriorityChange(event.target.value)
-          }
+          onChange={(event) => onPriorityChange(event.target.value)}
           aria-label="Filter by priority"
         >
           <option value="ALL">All Priorities</option>
@@ -70,25 +54,19 @@ function TaskFilters({
 
         <select
           value={categoryFilter}
-          onChange={(event) =>
-            onCategoryChange(event.target.value)
-          }
+          onChange={(event) => onCategoryChange(event.target.value)}
           aria-label="Filter by category"
         >
           {categories.map((category) => (
             <option key={category} value={category}>
-              {category === "ALL"
-                ? "All Categories"
-                : category}
+              {category === "ALL" ? "All Categories" : category}
             </option>
           ))}
         </select>
 
         <select
           value={sortBy}
-          onChange={(event) =>
-            onSortChange(event.target.value)
-          }
+          onChange={(event) => onSortChange(event.target.value)}
           aria-label="Sort tasks"
         >
           <option value="NEWEST">Newest</option>
@@ -101,6 +79,8 @@ function TaskFilters({
           type="button"
           className="clear-filter-btn"
           onClick={onClear}
+          aria-label="Clear all tasks and filters"
+          title="Clear all tasks and filters"
         >
           Clear
         </button>

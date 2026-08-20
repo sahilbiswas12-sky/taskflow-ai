@@ -7,15 +7,25 @@ function TaskCard({
   return (
     <article
       className={`task-card ${
-        task.completed ? "completed" : ""
+        task.completed
+          ? "completed"
+          : ""
+      } ${
+        task.aiGenerated
+          ? "ai-generated-task"
+          : ""
       }`}
     >
       <button
         type="button"
         className={`task-checkbox ${
-          task.completed ? "completed" : ""
+          task.completed
+            ? "completed"
+            : ""
         }`}
-        onClick={() => onToggle(task.id)}
+        onClick={() =>
+          onToggle(task.id)
+        }
         aria-label={
           task.completed
             ? "Mark task as active"
@@ -26,9 +36,17 @@ function TaskCard({
       </button>
 
       <div className="task-main">
-        <h3 className="task-title">
-          {task.title}
-        </h3>
+        <div className="task-title-row">
+          <h3 className="task-title">
+            {task.title}
+          </h3>
+
+          {task.aiGenerated && (
+            <span className="ai-task-badge">
+              ✦ AI
+            </span>
+          )}
+        </div>
 
         <div className="task-meta">
           <span
@@ -43,6 +61,15 @@ function TaskCard({
             ▣ {formatDate(task.dueDate)}
           </span>
 
+          {task.estimatedMinutes && (
+            <span className="task-estimate">
+              ⏱{" "}
+              {formatEstimate(
+                task.estimatedMinutes
+              )}
+            </span>
+          )}
+
           {task.category && (
             <span className="task-category">
               {task.category}
@@ -55,9 +82,11 @@ function TaskCard({
         <button
           type="button"
           className="task-action"
-          onClick={() => onEdit(task)}
+          onClick={() =>
+            onEdit(task)
+          }
           title="Edit task"
-          aria-label="Edit task"
+          aria-label={`Edit ${task.title}`}
         >
           ✎
         </button>
@@ -65,9 +94,11 @@ function TaskCard({
         <button
           type="button"
           className="task-action delete"
-          onClick={() => onDelete(task.id)}
+          onClick={() =>
+            onDelete(task.id)
+          }
           title="Delete task"
-          aria-label="Delete task"
+          aria-label={`Delete ${task.title}`}
         >
           ♢
         </button>
@@ -81,17 +112,51 @@ function formatDate(value) {
     return "No due date";
   }
 
-  const date = new Date(`${value}T00:00:00`);
+  const date = new Date(
+    `${value}T00:00:00`
+  );
 
-  if (Number.isNaN(date.getTime())) {
+  if (
+    Number.isNaN(date.getTime())
+  ) {
     return value;
   }
 
-  return date.toLocaleDateString("en-US", {
-    month: "short",
-    day: "numeric",
-    year: "numeric",
-  });
+  return date.toLocaleDateString(
+    "en-US",
+    {
+      month: "short",
+      day: "numeric",
+      year: "numeric",
+    }
+  );
+}
+
+function formatEstimate(minutes) {
+  const value = Number(minutes);
+
+  if (
+    !Number.isFinite(value) ||
+    value <= 0
+  ) {
+    return "";
+  }
+
+  if (value < 60) {
+    return `${value} min`;
+  }
+
+  const hours = Math.floor(
+    value / 60
+  );
+
+  const remaining = value % 60;
+
+  if (remaining === 0) {
+    return `${hours} hr`;
+  }
+
+  return `${hours}h ${remaining}m`;
 }
 
 export default TaskCard;
